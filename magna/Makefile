@@ -7,3 +7,6 @@ test:
 
 dev:
 	python3 manage.py runserver
+
+install:
+	pip3 install -r requirements.txt; \
