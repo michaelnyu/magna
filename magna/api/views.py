@@ -32,4 +32,13 @@ def get_post_user_entry(request):
 		return Response(serializer.data)
 	# create a new user entry in our table
 	elif request.method == 'POST':
-		return Response({})
+		data = {
+			'name': request.data.get('name'),
+			'donation': int(request.data.get('donation')),
+			'text': request.data.get('text'),
+		}
+		serializer = UserEntrySerializer(data=data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

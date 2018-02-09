@@ -37,3 +37,34 @@ class GetAllPuppiesTest(TestCase):
 		response = client.get(
 			reverse('get_delete_put_user_entry', kwargs={'pk': 30}))
 		self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+class CreateNewUserEntryTest(TestCase):
+    """ Test module for inserting a new User Entry """
+
+    def setUp(self):
+        self.valid_payload = {
+            'name': 'Michael',
+            'donation': 10,
+            'text': 'big big big huge penis',
+        }
+        self.invalid_payload = {
+            'name': '',
+            'donation': 0,
+            'text': "small small penis"
+        }
+
+    def test_create_valid_user_entry(self):
+        response = client.post(
+            reverse('get_post_user_entry'),
+            data=json.dumps(self.valid_payload),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_invalid_user_entry(self):
+        response = client.post(
+            reverse('get_post_user_entry'),
+            data=json.dumps(self.invalid_payload),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
