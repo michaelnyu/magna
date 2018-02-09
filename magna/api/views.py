@@ -17,10 +17,15 @@ def get_delete_put_user_entry(request, pk):
 		return Response(serializer.data)
 	# delete specified User Entry
 	elif request.method == 'DELETE':
-		return Response({})
+		user_entry.delete()
+		return Response(status=status.HTTP_204_NO_CONTENT)
 	# update details of a specified User Entry
 	elif request.method == 'PUT':
-		return Response({})
+		serializer = UserEntrySerializer(user_entry, data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'POST'])
