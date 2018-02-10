@@ -10,3 +10,6 @@ dev:
 
 install:
 	pip3 install -r requirements.txt; \
+
+shell:
+	python3 manage.py shell
