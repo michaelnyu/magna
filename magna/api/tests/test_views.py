@@ -121,10 +121,3 @@ class DeleteSingleUserEntryTest(TestCase):
 			reverse('get_delete_put_user_entry', kwargs={'pk': 66}))
 		self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-
-
-
-
-
-
-
