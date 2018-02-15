@@ -54,4 +54,6 @@ def get_post_user_entry(request):
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
+@api_view(['GET'])
+def get_latest_entries(request, number):
+	
