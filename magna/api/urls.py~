@@ -11,7 +11,8 @@ urlpatterns = [
         r'^api/v1/entries/$',
         views.get_post_user_entry,
         name='get_post_user_entry'
-    ),
+    )
+
     url(
         r'^api/v1/top/donors/$',
         views.get_top_five_donors,

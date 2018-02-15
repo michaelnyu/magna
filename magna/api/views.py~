@@ -53,7 +53,7 @@ def get_post_user_entry(request):
 def get_top_five_donors(request):
 	entries = UserEntry.objects.all()
 	count = entries.count()
-	return Response(entries.order_by('-donation')[:5], status=status.HTTP_200_OK)
+	return Response(entries.order_by('-donation')[:5], status=status.HTTP_200_SUCCESS)
 
 
 """

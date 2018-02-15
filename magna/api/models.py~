@@ -22,4 +22,4 @@ class UserEntry(models.Model):
 		return self.name + ' added'
 
 
-#class Donations
+class Donations
