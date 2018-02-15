@@ -41,9 +41,17 @@ def get_post_user_entry(request):
 			'name': request.data.get('name'),
 			'donation': int(request.data.get('donation')),
 			'text': request.data.get('text'),
+			'head': request.data.get('head'),
+			'arms': request.data.get('arms'),
+			'torso': request.data.get('torso'),
+			'legs': request.data.get('legs'),
+			'shoes': request.data.get('shoes'),
 		}
 		serializer = UserEntrySerializer(data=data)
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
