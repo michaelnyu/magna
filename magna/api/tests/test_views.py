@@ -144,10 +144,29 @@ class GetTopFiveDonorsTest(TestCase):
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
-"""
+class GetLatestDonorsTest(TestCase):
+        """ Test module for GET latest five donors """
 
-class GetTotalDonations(TestCase):
-	 Test module for GET total donations
+        def setUP(self):
+                UserEntry.objects.create(
+                        name='u1', donation=22, text="beautiful soup1")
+                UserEntry.objects.create(
+                        name='u2', donation=0, text="beautiful soup2")
+                UserEntry.objects.create(
+                        name='u3', donation=50, text="beautiful soup3")
+                UserEntry.objects.create(
+                        name='u4', donation=99, text="beautiful soup4")
+                UserEntry.objects.create(
+                        name='u5', donation=75, text="beautiful soup5")
+                UserEntry.objects.create(
+                        name='u6', donation=69, text="beautiful soup6")
+
+        def test_valid_get_top_donors(self):
+                response = client.get(reverse('get_latest_donors'))
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+class GetTotalDonationsTest(TestCase):
+	""" Test module for GET total donations """
 
 	def setUP(self):
 		UserEntry.objects.create(
@@ -163,4 +182,4 @@ class GetTotalDonations(TestCase):
 		response = client.get(reverse('get_total_donations'))
 		self.assertEqual(response.data, 171)
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
-"""
+

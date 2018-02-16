@@ -52,16 +52,25 @@ def get_post_user_entry(request):
 @api_view(['GET'])
 def get_top_five_donors(request):
 	entries = UserEntry.objects.all()
-	count = entries.count()
-	return Response(entries.order_by('-donation')[:5], status=status.HTTP_200_SUCCESS)
+	donors = entries.order_by('-donation')[:5]
+	top_users = []
+	for user in donors:
+		if user.donation != 0:
+			top_users.append(user.id)
+	return Response(top_users, status=status.HTTP_200_OK)
 
-
-"""
 
 @api_view(['GET'])
-def get_total_donations(requestion):
-	entries = UserEntry.objects.aggregate(Sum('donation'))
-	serializer = UserEntrySerializer(entries)
-	return Response(serializer.data)
-"""
+def get_latest_donors(request):
+	entries = UserEntry.objects.all()
+	donors = entries.order_by('-pk')[:5]
+	latest_users = []
+	for user in donors:
+		latest_users.append(user.id)
+	return Response(latest_users, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_total_donations(request):
+	entries = UserEntry.objects.all().aggregate(Sum('donation'))['donation__sum'] or 0
+	return Response(entries, status=status.HTTP_200_OK)
 

@@ -16,11 +16,16 @@ urlpatterns = [
         r'^api/v1/top/donors/$',
         views.get_top_five_donors,
         name='get_top_five_donors'
+    ),
+    url(
+        r'^api/v1/latest/donors/$',
+        views.get_latest_donors,
+        name='get_latest_donors'
+    ),
+    url(
+        r'^api/v1/donations/$',
+        views.get_total_donations,
+        name='get_total_donations'
     )
-  #  url(
-  #      r'^api/v1/donations/$',
-  #      views.get_total_donations,
-  #      name='get_total_donations'
-  #  )
 
 ]
