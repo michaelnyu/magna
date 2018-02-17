@@ -127,6 +127,9 @@ class DeleteSingleUserEntryTest(TestCase):
 		self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 class GetRecentUserEntryTest(TestCase):
+	""" Test module for most getting 'n' most recent entries
+	"""
+
 	def setUp(self):
 		self.u1 = UserEntry.objects.create(
 			name='u1', donation=22, text="beautiful soup1")
@@ -136,7 +139,6 @@ class GetRecentUserEntryTest(TestCase):
 			name='u3', donation=50, text="beautiful soup3")
 		self.u4 = UserEntry.objects.create(
 			name='u4', donation=99, text="beautiful soup4")
-
 
 	def test_valid_recent_user(self):
 		response = client.get(
