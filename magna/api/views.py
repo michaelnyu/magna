@@ -55,5 +55,16 @@ def get_post_user_entry(request):
 
 
 @api_view(['GET'])
-def get_latest_entries(request, number):
+def get_recent_entries(request, number):
+	""" get most recent 'n' elements that have been added
+	"""
 	
+	if request.method == 'GET':
+		_recent = UserEntry.objects.all().order_by('-created_at')
+
+		if len(_recent) < int(number):
+			_recent = _recent[:int(number)]
+		_r_entries = [ r.id for r in _recent ]
+		return Response(_r_entries, status=status.HTTP_200_OK)
+
+	return Response(status=status.HTTP_400_BAD_REQUEST)
