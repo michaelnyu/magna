@@ -46,6 +46,11 @@ class CreateNewUserEntryTest(TestCase):
 			'name': 'Michael',
 			'donation': 10,
 			'text': 'big big big huge penis',
+			'head': 'big',
+			'arms': 'small',
+			'torso': 'slim',
+			'legs': 'tree',
+			'shoes': 'chucks',			
 		}
 		self.invalid_payload = {
 			'name': '',
@@ -120,4 +125,28 @@ class DeleteSingleUserEntryTest(TestCase):
 		response = client.delete(
 			reverse('get_delete_put_user_entry', kwargs={'pk': 66}))
 		self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+class GetRecentUserEntryTest(TestCase):
+	""" Test module for most getting 'n' most recent entries
+	"""
+
+	def setUp(self):
+		self.u1 = UserEntry.objects.create(
+			name='u1', donation=22, text="beautiful soup1")
+		self.u2 = UserEntry.objects.create(
+			name='u2', text="beautiful soup2")
+		self.u3 = UserEntry.objects.create(
+			name='u3', donation=50, text="beautiful soup3")
+		self.u4 = UserEntry.objects.create(
+			name='u4', donation=99, text="beautiful soup4")
+
+	def test_valid_recent_user(self):
+		response = client.get(
+			reverse('get_recent_entries', kwargs={'number': 2}))
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+	def test_valid_recent_user(self):
+		response = client.get(
+			reverse('get_recent_entries', kwargs={'number': 6}))
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
 

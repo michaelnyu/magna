@@ -11,5 +11,10 @@ urlpatterns = [
         r'^api/v1/entries/$',
         views.get_post_user_entry,
         name='get_post_user_entry'
-    )
+    ),
+    url(
+        r'^api/v1/recent/(?P<number>[0-9]+)$',
+        views.get_recent_entries,
+        name='get_recent_entries'
+    ),
 ]
