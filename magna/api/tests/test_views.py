@@ -50,7 +50,8 @@ class CreateNewUserEntryTest(TestCase):
 			'arms': 'small',
 			'torso': 'slim',
 			'legs': 'tree',
-			'shoes': 'chucks',			
+			'shoes': 'chucks',
+			'votes': 0,
 		}
 		self.invalid_payload = {
 			'name': '',
@@ -149,4 +150,26 @@ class GetRecentUserEntryTest(TestCase):
 		response = client.get(
 			reverse('get_recent_entries', kwargs={'number': 6}))
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+class PutIncrementVote(TestCase):
+	"""	Test module for incrementing a entry's vote
+	"""
+
+	def setUp(self):
+		self.u1 = UserEntry.objects.create(
+			name='u1', donation=22, text="beautiful soup1", votes=0)
+		self.u2 = UserEntry.objects.create(
+			name='u2', text="beautiful soup2", votes=1)
+		self.u3 = UserEntry.objects.create(
+			name='u3', donation=50, text="beautiful soup3", votes=0)
+
+	def test_valid_vote(self):
+		response = client.put(
+			reverse('put_vote', kwargs={'pk': self.u1.pk}))
+		self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+
+	def test_invalid_vote(self):
+		_response = client.put(
+			reverse('put_vote', kwargs={'pk': 60}))
+		self.assertEqual(_response.status_code, status.HTTP_404_NOT_FOUND)
 

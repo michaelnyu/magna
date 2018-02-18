@@ -1,6 +1,10 @@
+from django.db.models import F
+from django.shortcuts import get_object_or_404
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+
 from .models import UserEntry
 from .serializers import UserEntrySerializer
 
@@ -46,6 +50,7 @@ def get_post_user_entry(request):
 			'torso': request.data.get('torso'),
 			'legs': request.data.get('legs'),
 			'shoes': request.data.get('shoes'),
+			'votes': request.data.get('votes'),
 		}
 		serializer = UserEntrySerializer(data=data)
 		if serializer.is_valid():
@@ -68,3 +73,22 @@ def get_recent_entries(request, number):
 		return Response(_r_entries, status=status.HTTP_200_OK)
 
 	return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+def put_vote(request, pk):
+	""" Increment the votes count of the entry specified
+	"""
+
+	_user_entry = get_object_or_404(UserEntry, pk=pk)
+
+	if request.method == 'PUT':
+		_user_entry.votes = F('votes') + 1
+		_user_entry.save()
+		_user_entry.refresh_from_db()
+		return Response(status=status.HTTP_202_ACCEPTED)
+
+
+
+
+

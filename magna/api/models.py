@@ -12,6 +12,7 @@ class UserEntry(models.Model):
 	name = models.CharField(max_length=100)
 	text = models.CharField(max_length=255)
 	donation = models.IntegerField(default=0)
+	votes = models.IntegerField(default=0)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
