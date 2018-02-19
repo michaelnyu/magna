@@ -13,12 +13,12 @@ urlpatterns = [
         name='get_post_user_entry'
     ),
     url(
-        r'^api/v1/top/donors/$',
-        views.get_top_five_donors,
-        name='get_top_five_donors'
+        r'^api/v1/top/(?P<number>[0-9]+)$',
+        views.get_top_donors,
+        name='get_top_donors'
     ),
     url(
-        r'^api/v1/latest/donors/$',
+        r'^api/v1/latest/(?P<number>[0-9]+)/donors$',
         views.get_latest_donors,
         name='get_latest_donors'
     ),

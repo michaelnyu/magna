@@ -1,3 +1,4 @@
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -50,27 +51,37 @@ def get_post_user_entry(request):
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
-def get_top_five_donors(request):
-	entries = UserEntry.objects.all()
-	donors = entries.order_by('-donation')[:5]
-	top_users = []
-	for user in donors:
-		if user.donation != 0:
-			top_users.append(user.id)
-	return Response(top_users, status=status.HTTP_200_OK)
+def get_top_donors(request, number):
+	""" Get the top 'n' donors """
+	if request.method == 'GET':
+		entries = UserEntry.objects.all()
+		if len(entries) > int(number):
+			donors = entries.order_by('-donation')[:int(number)]
+		else:
+			donors = entries.order_by('-donation')[:len(entries)]
+		top_users = [user.id for user in donors if user.donation != 0]
+		return Response(top_users, status=status.HTTP_200_OK)
+	return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
-def get_latest_donors(request):
-	entries = UserEntry.objects.all()
-	donors = entries.order_by('-pk')[:5]
-	latest_users = []
-	for user in donors:
-		latest_users.append(user.id)
-	return Response(latest_users, status=status.HTTP_200_OK)
+def get_latest_donors(request, number):
+	""" Get most recent 'n' donors """
+	if request.method == 'GET':
+		entries = UserEntry.objects.exclude('donation' == 0)
+		if len(entries) > int(number):
+			donors = entries.order_by('-pk')[:int(number)]
+		else:
+			donors = entries.order_by('-pk')[:len(entries)]
+		latest_users = [user.id for user in donors]
+		return Response(latest_users, status=status.HTTP_200_OK)
+	return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def get_total_donations(request):
-	entries = UserEntry.objects.all().aggregate(Sum('donation'))['donation__sum'] or 0
-	return Response(entries, status=status.HTTP_200_OK)
+	""" Get sum of all donations """
+	if request.method == 'GET':
+		entries = UserEntry.objects.aggregate(total=Sum('donation'))['total'] or 0
+		return Response(entries, status=status.HTTP_200_OK)
+	return Response(status=status.HTTP_400_BAD_REQUEST)
 
