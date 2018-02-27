@@ -7,6 +7,7 @@ from rest_framework import status
 
 from .models import UserEntry
 from .serializers import UserEntrySerializer
+from django.db.models import Sum
 
 @api_view(['GET', 'DELETE', 'PUT'])
 def get_delete_put_user_entry(request, pk):
@@ -58,6 +59,40 @@ def get_post_user_entry(request):
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def get_top_donors(request, number):
+	""" Get the top 'n' donors """
+	if request.method == 'GET':
+		entries = UserEntry.objects.all()
+		if len(entries) > int(number):
+			donors = entries.order_by('-donation')[:int(number)]
+		else:
+			donors = entries.order_by('-donation')[:len(entries)]
+		top_users = [user.id for user in donors if user.donation != 0]
+		return Response(top_users, status=status.HTTP_200_OK)
+	return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def get_latest_donors(request, number):
+	""" Get most recent 'n' donors """
+	if request.method == 'GET':
+		entries = UserEntry.objects.filter(donation__gt=0)
+		if len(entries) > int(number):
+			donors = entries.order_by('-pk')[:int(number)]
+		else:
+			donors = entries.order_by('-pk')[:len(entries)]
+		latest_users = [user.id for user in donors]
+		return Response(latest_users, status=status.HTTP_200_OK)
+	return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_total_donations(request):
+	""" Get sum of all donations """
+	if request.method == 'GET':
+		entries = UserEntry.objects.aggregate(total=Sum('donation'))['total'] or 0
+		return Response(entries, status=status.HTTP_200_OK)
+	return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def get_recent_entries(request, number):
@@ -87,8 +122,3 @@ def put_vote(request, pk):
 		_user_entry.save()
 		_user_entry.refresh_from_db()
 		return Response(status=status.HTTP_202_ACCEPTED)
-
-
-
-
-
