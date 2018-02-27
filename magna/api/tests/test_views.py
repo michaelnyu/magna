@@ -46,6 +46,12 @@ class CreateNewUserEntryTest(TestCase):
 			'name': 'Michael',
 			'donation': 10,
 			'text': 'big big big huge penis',
+			'head': 'big',
+			'arms': 'small',
+			'torso': 'slim',
+			'legs': 'tree',
+			'shoes': 'chucks',
+			'votes': 0,
 		}
 		self.invalid_payload = {
 			'name': '',
@@ -121,7 +127,6 @@ class DeleteSingleUserEntryTest(TestCase):
 			reverse('get_delete_put_user_entry', kwargs={'pk': 66}))
 		self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-
 class GetTopDonorsTest(TestCase):
 	""" Test module for GET top five donors """
 
@@ -189,4 +194,50 @@ class GetTotalDonationsTest(TestCase):
 		response = client.get(reverse('get_total_donations'))
 		#self.assertEqual(response.data, 171)
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+ class GetRecentUserEntryTest(TestCase):
+	""" Test module for most getting 'n' most recent entries
+	"""
+
+	def setUp(self):
+		self.u1 = UserEntry.objects.create(
+			name='u1', donation=22, text="beautiful soup1")
+		self.u2 = UserEntry.objects.create(
+			name='u2', text="beautiful soup2")
+		self.u3 = UserEntry.objects.create(
+			name='u3', donation=50, text="beautiful soup3")
+		self.u4 = UserEntry.objects.create(
+			name='u4', donation=99, text="beautiful soup4")
+
+	def test_valid_recent_user(self):
+		response = client.get(
+			reverse('get_recent_entries', kwargs={'number': 2}))
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+	def test_valid_recent_user(self):
+		response = client.get(
+			reverse('get_recent_entries', kwargs={'number': 6}))
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+class PutIncrementVote(TestCase):
+	"""	Test module for incrementing a entry's vote
+	"""
+
+	def setUp(self):
+		self.u1 = UserEntry.objects.create(
+			name='u1', donation=22, text="beautiful soup1", votes=0)
+		self.u2 = UserEntry.objects.create(
+			name='u2', text="beautiful soup2", votes=1)
+		self.u3 = UserEntry.objects.create(
+			name='u3', donation=50, text="beautiful soup3", votes=0)
+
+	def test_valid_vote(self):
+		response = client.put(
+			reverse('put_vote', kwargs={'pk': self.u1.pk}))
+		self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+
+	def test_invalid_vote(self):
+		_response = client.put(
+			reverse('put_vote', kwargs={'pk': 60}))
+		self.assertEqual(_response.status_code, status.HTTP_404_NOT_FOUND)
 

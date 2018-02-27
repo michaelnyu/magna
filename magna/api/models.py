@@ -12,8 +12,19 @@ class UserEntry(models.Model):
 	name = models.CharField(max_length=100)
 	text = models.CharField(max_length=255)
 	donation = models.IntegerField(default=0)
+	votes = models.IntegerField(default=0)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
+
+	'''
+	character description
+	'''
+	head = models.CharField(max_length=50, default='default')
+	arms = models.CharField(max_length=50, default='default')
+	torso = models.CharField(max_length=50, default='default')
+	legs = models.CharField(max_length=50, default='default')
+	shoes = models.CharField(max_length=50, default='default')
+
 
 	def get_donation(self):
 		return self.name + ' donated: ' + repr(self.donation)

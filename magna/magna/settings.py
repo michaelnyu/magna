@@ -72,6 +72,13 @@ CORS_ORIGIN_REGEX_WHITELIST = (
 
 # SECURE_SSL_REDIRECT = False
 ROOT_URLCONF = 'magna.urls'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 TEMPLATES = [
     {
@@ -97,11 +104,11 @@ WSGI_APPLICATION = 'magna.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'magna_db',
         'USER': 'admin',
         'PASSWORD': 'password123',
-        'HOST': '127.0.0.1',
+        'HOST': 'localhost',
         'PORT': '5432'
     }
 }
