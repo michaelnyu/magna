@@ -16,18 +16,30 @@ class UserEntry(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
-	'''
-	character description
-	'''
-	head = models.CharField(max_length=50, default='default')
-	arms = models.CharField(max_length=50, default='default')
-	torso = models.CharField(max_length=50, default='default')
-	legs = models.CharField(max_length=50, default='default')
-	shoes = models.CharField(max_length=50, default='default')
+	#Legacy Code
+	#'''
+	#character description
+	#'''
+	#head = models.CharField(max_length=50, default='default')
+	#arms = models.CharField(max_length=50, default='default')
+	#torso = models.CharField(max_length=50, default='default')
+	#legs = models.CharField(max_length=50, default='default')
+	#shoes = models.CharField(max_length=50, default='default')
 
+	#New Code 
+	'''
+	character description - Now based on region of the world
+	'''
 
+	region = models.CharField(max_length=50, default='US')
+
+	
+	
 	def get_donation(self):
 		return self.name + ' donated: ' + repr(self.donation)
 
 	def __repr__(self):
 		return self.name + ' added'
+	
+	def get_region(self):
+		return self.region 

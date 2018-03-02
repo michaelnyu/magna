@@ -73,11 +73,12 @@ def get_top_donors(request, number):
 def get_users_by_region(request, region):
 	""" Get all users in a specified region """
 	if request.method == 'GET':
-		entries = UserEntry.objects.filter(region=region)
-		if len(entries) == 0:
+		
+	       	entries = UserEntry.objects.filter(region=region)
+		if len(entries) = 0:
 			return Response(status=status.HTTP_404_NOT_FOUND)
-		serializer = UserEntrySerializer(entries, many=True)
-		return Response(serializer.data)
+	       	serializer = UserEntrySerializer(entries, many=True)
+	       	return Response(serializer.data)
 		
 	return Response(status=status.HTTP_400_BAD_REQUEST)
 
