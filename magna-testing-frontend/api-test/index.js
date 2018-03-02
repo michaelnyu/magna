@@ -32,4 +32,3 @@ async function sendData(){
 
 var submit_button = document.querySelector('#submit');
 submit_button.addEventListener('click', ()=>{ sendData() });	
-

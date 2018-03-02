@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="../stylesheets/style.css">
+  		<script type="text/javascript" src="https://d2t45z63lq9zlh.cloudfront.net/panda-v0.0.5.min.js"></script>
+	</head>
+	<body>
+		<div id="token_div">
+			<form id="panda_cc_form" class="form">
+			  <div>
+			    <label>First Name</label>
+			    <input type="text" data-panda="first_name" value="Joe">
+			  </div>
+
+			  <div>
+			    <label>Last Name</label>
+			    <input type="text" data-panda="last_name" value="Bruin">
+			  </div>
+
+			  <div>
+			    <label>Credit Card Number</label>
+			    <input type="text" data-panda="credit_card" value="4111111111111111">
+			  </div>
+
+			  <div>
+			    <label>Expiration</label>
+			    <input type="text" data-panda="expiration" value="04/2018">
+			  </div>
+
+			  <div>
+			    <label>CVV</label>
+			    <input type="text" data-panda="cvv" value="123">
+			  </div>
+
+			  <div id="tokenize">
+			    <button type="submit">Tokenize!</button>
+			  </div>
+			</form>
+		</div>
+		<div id="donation_div">
+			<form id="donation_form" class="form">
+				<div>
+					<label>Amount (in Dollars)</label>
+					<input type="text" id="amount" value="10">
+				</div>
+
+				<div>
+					<label>Email (to send you a receipt)</label>
+					<input type="text" id="email" value="michael.yu2016@gmail.com">
+				</div>
+
+				<div id="donate">
+					<input type="button" id="donate">Donate!</input>
+				</div>
+			</form>
+		</div>
+
+
+		<script src="../javascripts/payment.js"></script>
+	</body>
+</html>
