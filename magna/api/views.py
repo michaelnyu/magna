@@ -87,8 +87,3 @@ def put_vote(request, pk):
 		_user_entry.save()
 		_user_entry.refresh_from_db()
 		return Response(status=status.HTTP_202_ACCEPTED)
-
-
-
-
-
