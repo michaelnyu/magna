@@ -152,6 +152,26 @@ class GetTopDonorsTest(TestCase):
 		response = client.get(reverse('get_top_donors', kwargs={'number': 10}))
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+class GetUserByRegion(TestCase):
+	""" Test module for GET users in a region """
+	
+	def setUp(self):
+		UserEntry.objects.create(
+			name='u1', region="US")
+		UserEntry.objects.create(
+			name='u2', region="US")
+		UserEntry.objects.create(
+			name='u3', region="Russia")
+		UserEntry.objects.create(
+			name='u4', region="Italy")
+	def test_valid_get_region_users(self):
+		response = client.get(reverse('get_users_by_region', kwargs={'region': 'US'}))
+		response2 = client.get(reverse('get_users_by_region', kwargs={'region': 'Russia'}))
+		response3 = client.get(reverse('get_users_by_region', kwargs={'region': 'Itali'}))
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		self.assertEqual(response2.status_code, status.HTTP_200_OK)
+		self.assertEqual(response3.status_code, status.HTTP_404_NOT_FOUND)
+
 class GetLatestDonorsTest(TestCase):
 	""" Test module for GET latest five donors """
 
