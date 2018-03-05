@@ -46,11 +46,7 @@ def get_post_user_entry(request):
 			'name': request.data.get('name'),
 			'donation': int(request.data.get('donation')),
 			'text': request.data.get('text'),
-			'head': request.data.get('head'),
-			'arms': request.data.get('arms'),
-			'torso': request.data.get('torso'),
-			'legs': request.data.get('legs'),
-			'shoes': request.data.get('shoes'),
+			'region': request.data.get('region'),
 			'votes': request.data.get('votes'),
 		}
 		serializer = UserEntrySerializer(data=data)
@@ -70,6 +66,19 @@ def get_top_donors(request, number):
 			donors = entries.order_by('-donation')[:len(entries)]
 		top_users = [user.id for user in donors if user.donation != 0]
 		return Response(top_users, status=status.HTTP_200_OK)
+	return Response(status=status.HTTP_400_BAD_REQUEST)
+
+#New Code for revised User Entries
+@api_view(['GET'])
+def get_users_by_region(request, region):
+	""" Get all users in a specified region """
+	if request.method == 'GET':
+		entries = UserEntry.objects.filter(region=region)
+		if len(entries) == 0:
+			return Response(status=status.HTTP_404_NOT_FOUND)
+		serializer = UserEntrySerializer(entries, many=True)
+		return Response(serializer.data)
+		
 	return Response(status=status.HTTP_400_BAD_REQUEST)
 
 

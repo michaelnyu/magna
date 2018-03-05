@@ -17,6 +17,11 @@ urlpatterns = [
         views.get_top_donors,
         name='get_top_donors'
     ),
+    url( 
+        r'^api/v1/(?P<region>[a-zA-Z]+)$',
+        views.get_users_by_region,
+        name='get_users_by_region'
+    ),
     url(
         r'^api/v1/latest/(?P<number>[0-9]+)/donors$',
         views.get_latest_donors,
