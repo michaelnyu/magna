@@ -1,9 +1,9 @@
 from django.db import models
+from django.contrib.postgres.fields import JSONField
 
 class UserEntry(models.Model):
-	'''
-	User Entry Model
-	Defines attributes of User Entry including:
+	''' User Entry Model
+		Defines attributes of User Entry including:
 		donation amount (in cents)
 		character description
 		name
@@ -13,33 +13,14 @@ class UserEntry(models.Model):
 	text = models.CharField(max_length=255)
 	donation = models.IntegerField(default=0)
 	votes = models.IntegerField(default=0)
+	character = JSONField(default={})
+
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
-	#Legacy Code
-	#'''
-	#character description
-	#'''
-	#head = models.CharField(max_length=50, default='default')
-	#arms = models.CharField(max_length=50, default='default')
-	#torso = models.CharField(max_length=50, default='default')
-	#legs = models.CharField(max_length=50, default='default')
-	#shoes = models.CharField(max_length=50, default='default')
-
-	#New Code 
-	'''
-	character description - Now based on region of the world
-	'''
-
-	region = models.CharField(max_length=50, default='US')
-
-	
-	
 	def get_donation(self):
 		return self.name + ' donated: ' + repr(self.donation)
 
 	def __repr__(self):
 		return self.name + ' added'
 	
-	def get_region(self):
-		return self.region 

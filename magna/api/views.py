@@ -46,7 +46,7 @@ def get_post_user_entry(request):
 			'name': request.data.get('name'),
 			'donation': int(request.data.get('donation')),
 			'text': request.data.get('text'),
-			'region': request.data.get('region'),
+			'character': request.data.get('character'),
 			'votes': request.data.get('votes'),
 		}
 		serializer = UserEntrySerializer(data=data)
@@ -70,10 +70,10 @@ def get_top_donors(request, number):
 
 #New Code for revised User Entries
 @api_view(['GET'])
-def get_users_by_region(request, region):
+def get_users_by_name(request, name):
 	""" Get all users in a specified region """
 	if request.method == 'GET':
-		entries = UserEntry.objects.filter(region=region)
+		entries = UserEntry.objects.filter(name=name)
 		if len(entries) == 0:
 			return Response(status=status.HTTP_404_NOT_FOUND)
 		serializer = UserEntrySerializer(entries, many=True)
