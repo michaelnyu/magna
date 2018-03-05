@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '%5h^zm^9-!ux3m4#!@ok&$%2*#j2mjzmg!0r!(u$c+yp2(0h*u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['159.203.117.240']
 
 
 # Application definition
@@ -72,7 +72,7 @@ CORS_ORIGIN_REGEX_WHITELIST = (
 # SECURE_SSL_REDIRECT = False
 ROOT_URLCONF = 'magna.urls'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_ROOT = os.path.join(BASE_DIR, "magna/static/")
 STATIC_URL = '/static/'
 
 # STATICFILES_DIRS = (

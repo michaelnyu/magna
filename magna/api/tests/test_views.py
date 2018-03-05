@@ -46,12 +46,8 @@ class CreateNewUserEntryTest(TestCase):
 			'name': 'Michael',
 			'donation': 10,
 			'text': 'big big big huge penis',
-			'head': 'big',
-			'arms': 'small',
-			'torso': 'slim',
-			'legs': 'tree',
-			'shoes': 'chucks',
 			'votes': 0,
+			'region': 'US'
 		}
 		self.invalid_payload = {
 			'name': '',
@@ -87,6 +83,7 @@ class UpdateSingleUserEntryTest(TestCase):
 			'name': 'Michael',
 			'donation': 10,
 			'text': 'big big big huge penis',
+			'region': 'US'
 		}
 		self.invalid_payload = {
 			'name': '',
@@ -215,7 +212,7 @@ class GetTotalDonationsTest(TestCase):
 		#self.assertEqual(response.data, 171)
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 
- class GetRecentUserEntryTest(TestCase):
+class GetRecentUserEntryTest(TestCase):
 	""" Test module for most getting 'n' most recent entries
 	"""
 
