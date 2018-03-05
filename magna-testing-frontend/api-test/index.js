@@ -1,4 +1,5 @@
-var apibase = "http://localhost:8000/api/v1/"
+// var apibase = "http://159.203.117.240/api/v1/"
+const apibase = "http://localhost:8000/api/v1/"
 
 async function sendData(){
 	var name = document.querySelector('#name').value;
