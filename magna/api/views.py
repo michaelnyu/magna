@@ -64,8 +64,9 @@ def get_top_donors(request, number):
 			donors = entries.order_by('-donation')[:int(number)]
 		else:
 			donors = entries.order_by('-donation')[:len(entries)]
-		top_users = [user.id for user in donors if user.donation != 0]
-		return Response(top_users, status=status.HTTP_200_OK)
+		top_users = [user for user in donors if user.donation != 0]
+		serializer = UserEntrySerializer(top_users, many=True)
+		return Response(serializer.data, status=status.HTTP_200_OK)
 	return Response(status=status.HTTP_400_BAD_REQUEST)
 
 #New Code for revised User Entries
@@ -91,8 +92,9 @@ def get_latest_donors(request, number):
 			donors = entries.order_by('-pk')[:int(number)]
 		else:
 			donors = entries.order_by('-pk')[:len(entries)]
-		latest_users = [user.id for user in donors]
-		return Response(latest_users, status=status.HTTP_200_OK)
+		latest_users = [user for user in donors]
+		serializer = UserEntrySerializer(latest_users, many=True)
+		return Response(serializer.data, status=status.HTTP_200_OK)
 	return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
@@ -111,10 +113,13 @@ def get_recent_entries(request, number):
 	if request.method == 'GET':
 		_recent = UserEntry.objects.all().order_by('-created_at')
 
-		if len(_recent) < int(number):
+		if len(_recent) > int(number):
 			_recent = _recent[:int(number)]
-		_r_entries = [ r.id for r in _recent ]
-		return Response(_r_entries, status=status.HTTP_200_OK)
+		else:
+			_recent = _recent[:len(_recent)]
+		_r_entries = [ r for r in _recent ]
+		serializer = UserEntrySerializer(_r_entries, many=True)
+		return Response(serializer.data, status=status.HTTP_200_OK)
 
 	return Response(status=status.HTTP_400_BAD_REQUEST)
 
