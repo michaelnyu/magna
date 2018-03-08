@@ -46,7 +46,6 @@ class CreateNewUserEntryTest(TestCase):
 			'name': 'Michael',
 			'donation': 10,
 			'text': 'big big big huge penis',
-			'votes': 0,
 			'character': {'head': 'penis', 'shoe': 'as;ldk'}
 		}
 		self.invalid_payload = {

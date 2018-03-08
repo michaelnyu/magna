@@ -46,8 +46,8 @@ def get_post_user_entry(request):
 			'name': request.data.get('name'),
 			'donation': int(request.data.get('donation')),
 			'text': request.data.get('text'),
+			'character_name': request.data.get('character').get('name'),
 			'character': request.data.get('character'),
-			'votes': request.data.get('votes'),
 		}
 		serializer = UserEntrySerializer(data=data)
 		if serializer.is_valid():
@@ -101,8 +101,11 @@ def get_latest_donors(request, number):
 def get_total_donations(request):
 	""" Get sum of all donations """
 	if request.method == 'GET':
-		entries = UserEntry.objects.aggregate(total=Sum('donation'))['total'] or 0
-		return Response(entries, status=status.HTTP_200_OK)
+		s = UserEntry.objects.aggregate(total=Sum('donation'))['total'] or 0
+		payload = {
+			'total': s,
+		}
+		return Response(payload, status=status.HTTP_200_OK)
 	return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])

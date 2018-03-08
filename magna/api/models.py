@@ -8,11 +8,12 @@ class UserEntry(models.Model):
 		character description
 		name
 	'''
-
+	key = models.AutoField(primary_key=True)
 	name = models.CharField(max_length=100)
 	text = models.CharField(max_length=255)
 	donation = models.IntegerField(default=0)
 	votes = models.IntegerField(default=0)
+	character_name = models.CharField(max_length=50, default="")
 	character = JSONField(default={})
 
 	created_at = models.DateTimeField(auto_now_add=True)
