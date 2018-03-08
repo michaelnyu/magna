@@ -94,7 +94,10 @@ def get_latest_donors(request, number):
 			donors = entries.order_by('-pk')[:len(entries)]
 		latest_users = [user for user in donors]
 		serializer = UserEntrySerializer(latest_users, many=True)
-		return Response(serializer.data, status=status.HTTP_200_OK)
+		data = {
+			'entries' : serializer.data,
+		}
+		return Response(data, status=status.HTTP_200_OK)
 	return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
@@ -122,7 +125,10 @@ def get_recent_entries(request, number):
 			_recent = _recent[:len(_recent)]
 		_r_entries = [ r for r in _recent ]
 		serializer = UserEntrySerializer(_r_entries, many=True)
-		return Response(serializer.data, status=status.HTTP_200_OK)
+		data = {
+			'entries' : serializer.data,
+		}
+		return Response(data, status=status.HTTP_200_OK)
 
 	return Response(status=status.HTTP_400_BAD_REQUEST)
 
