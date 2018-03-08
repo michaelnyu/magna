@@ -66,7 +66,10 @@ def get_top_donors(request, number):
 			donors = entries.order_by('-donation')[:len(entries)]
 		top_users = [user for user in donors if user.donation != 0]
 		serializer = UserEntrySerializer(top_users, many=True)
-		return Response(serializer.data, status=status.HTTP_200_OK)
+		data = {
+			'entries' : serializer.data,
+		}
+		return Response(data, status=status.HTTP_200_OK)
 	return Response(status=status.HTTP_400_BAD_REQUEST)
 
 #New Code for revised User Entries
