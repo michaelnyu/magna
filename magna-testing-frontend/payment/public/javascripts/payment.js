@@ -50,8 +50,8 @@ submit_button.addEventListener('click', ()=>{ donationCreate() });
 
 /* POST USER ENTRY */
 
-const apibase = "http://159.203.117.240/api/"
-// const apibase = "http://localhost:8000/api/";
+// const apibase = "http://159.203.117.240/api/"
+const apibase = "http://localhost:8000/api/";
 
 async function sendData(){
   const name = document.querySelector('#name').value;
