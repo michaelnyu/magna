@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='userentry',
             name='key',
-            field=models.AutoField(default=0, primary_key=True, serialize=False, null=False),
+            field=models.AutoField(default=0),
             preserve_default=False,
         ),
     ]
