@@ -14,10 +14,6 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RemoveField(
             model_name='userentry',
-            name='character_name',
-        ),
-        migrations.RemoveField(
-            model_name='userentry',
             name='tempkey',
         ),
     ]
