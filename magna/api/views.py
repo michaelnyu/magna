@@ -4,11 +4,12 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-import requests
+from django.db.models import Sum
 
 from .models import UserEntry
 from .serializers import UserEntrySerializer
-from django.db.models import Sum
+from .sentiment import listEntities, showSentiment
+
 
 @api_view(['GET', 'DELETE', 'PUT'])
 def get_delete_put_user_entry(request, pk):
@@ -43,16 +44,14 @@ def get_post_user_entry(request):
 		return Response(serializer.data)
 	# create a new user entry in our table
 	elif request.method == 'POST':
-
-		r = requests.get('https://api.github.com/events')
-		return Response(r, status=status.HTTP_201_CREATED);
-
+		text = request.data.get('text')
 		data = {
 			'name': request.data.get('name'),
 			'donation': int(request.data.get('donation')),
-			'text': request.data.get('text'),
+			'text': text,
 			'character_name': request.data.get('character').get('name'),
 			'character': request.data.get('character'),
+			'entities': listEntities(text),
 		}
 		serializer = UserEntrySerializer(data=data)
 		if serializer.is_valid():
