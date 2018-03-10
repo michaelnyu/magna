@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+import requests
 
 from .models import UserEntry
 from .serializers import UserEntrySerializer
@@ -42,6 +43,10 @@ def get_post_user_entry(request):
 		return Response(serializer.data)
 	# create a new user entry in our table
 	elif request.method == 'POST':
+
+		r = requests.get('https://api.github.com/events')
+		return Response(r, status=status.HTTP_201_CREATED);
+
 		data = {
 			'name': request.data.get('name'),
 			'donation': int(request.data.get('donation')),

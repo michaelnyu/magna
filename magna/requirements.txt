@@ -2,3 +2,5 @@ Django==1.11.0
 psycopg2==2.7.1
 djangorestframework
 django-cors-headers
+requests
+google-cloud-language
