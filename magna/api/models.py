@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.fields import JSONField, ArrayField
 
 class UserEntry(models.Model):
 	''' User Entry Model
@@ -15,6 +15,9 @@ class UserEntry(models.Model):
 	votes = models.IntegerField(default=0)
 	character_name = models.CharField(max_length=50, default="")
 	character = JSONField(default={})
+	entities = ArrayField(models.CharField(max_length=200), default=[])
+	sentiment_score = models.IntegerField(default=0)
+	sentiment_magnitude = models.IntegerField(default=0)
 
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
