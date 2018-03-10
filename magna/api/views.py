@@ -7,6 +7,7 @@ from rest_framework import status
 from django.db.models import Sum
 
 from .models import UserEntry
+import httplib
 from .serializers import UserEntrySerializer
 from .sentiment import listEntities, showSentiment
 
@@ -53,6 +54,17 @@ def get_post_user_entry(request):
 			'character': request.data.get('character'),
 			'entities': listEntities(text),
 		}
+		#Sentiment Analysis on text
+		conn = httplib.HTTPSConnection('#REPLACE WITH API')
+		documents = { 'documents': [
+				{ 'id': '1', 'language': 'en', 'text': data['text'] }
+		]}
+		body = json.dumps(documents)
+		conn.request("POST", '#REPLACE WITH AZURE API', body, '#API KEY')
+		response = conn.getresponse()
+		output = str(response.read())
+		#At this point we'll have the score. Run RegEx to get the actual amount and then return in a response
+
 		serializer = UserEntrySerializer(data=data)
 		if serializer.is_valid():
 			serializer.save()
