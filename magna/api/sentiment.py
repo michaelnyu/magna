@@ -39,7 +39,9 @@ def showSentiment(text):
 
     sentiment = client.analyze_sentiment(document).document_sentiment
 
-    result = [int(sentiment.score)]
-    result.append(int(sentiment.magnitude))
+    return (sentiment.score, sentiment.magnitude)
 
-    return result
+    # result = [sentiment.score]
+    # result.append(int(sentiment.magnitude))
+
+    # return result

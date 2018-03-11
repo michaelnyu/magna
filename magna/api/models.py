@@ -16,8 +16,8 @@ class UserEntry(models.Model):
 	character_name = models.CharField(max_length=50, default="")
 	character = JSONField(default={})
 	entities = ArrayField(models.CharField(max_length=200), default=[])
-	sentiment_score = models.IntegerField(default=0)
-	sentiment_magnitude = models.IntegerField(default=0)
+	sentiment_score = models.FloatField(default=-1)
+	sentiment_magnitude = models.FloatField(default=-1)
 
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
