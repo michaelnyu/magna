@@ -4,11 +4,13 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-import requests
+from django.db.models import Sum
 
 from .models import UserEntry
+import httplib
 from .serializers import UserEntrySerializer
-from django.db.models import Sum
+from .sentiment import listEntities, showSentiment
+
 
 from .sentiment import listEntities, showSentiment
 
