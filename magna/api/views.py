@@ -4,11 +4,13 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-import requests
+from django.db.models import Sum
 
 from .models import UserEntry
+import httplib
 from .serializers import UserEntrySerializer
-from django.db.models import Sum
+from .sentiment import listEntities, showSentiment
+
 
 @api_view(['GET', 'DELETE', 'PUT'])
 def get_delete_put_user_entry(request, pk):
@@ -43,17 +45,26 @@ def get_post_user_entry(request):
 		return Response(serializer.data)
 	# create a new user entry in our table
 	elif request.method == 'POST':
-
-		r = requests.get('https://api.github.com/events')
-		return Response(r, status=status.HTTP_201_CREATED);
-
+		text = request.data.get('text')
 		data = {
 			'name': request.data.get('name'),
 			'donation': int(request.data.get('donation')),
-			'text': request.data.get('text'),
+			'text': text,
 			'character_name': request.data.get('character').get('name'),
 			'character': request.data.get('character'),
+			'entities': listEntities(text),
 		}
+		#Sentiment Analysis on text
+		conn = httplib.HTTPSConnection('#REPLACE WITH API')
+		documents = { 'documents': [
+				{ 'id': '1', 'language': 'en', 'text': data['text'] }
+		]}
+		body = json.dumps(documents)
+		conn.request("POST", '#REPLACE WITH AZURE API', body, '#API KEY')
+		response = conn.getresponse()
+		output = str(response.read())
+		#At this point we'll have the score. Run RegEx to get the actual amount and then return in a response
+
 		serializer = UserEntrySerializer(data=data)
 		if serializer.is_valid():
 			serializer.save()
