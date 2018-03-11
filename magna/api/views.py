@@ -7,14 +7,8 @@ from rest_framework import status
 from django.db.models import Sum
 
 from .models import UserEntry
-import httplib
 from .serializers import UserEntrySerializer
 from .sentiment import listEntities, showSentiment
-
-
-from .sentiment import listEntities, showSentiment
-
-
 
 @api_view(['GET', 'DELETE', 'PUT'])
 def get_delete_put_user_entry(request, pk):
