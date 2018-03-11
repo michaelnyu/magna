@@ -23,5 +23,23 @@ def listEntities(text):
     return result
 
 def showSentiment(text):
+    "Calculates sentiment of given text"
+    client = language.LanguageServiceClient()
 
-    return 0
+    if isinstance(text, six.binary_type):
+        text = text.decode('utf-8')
+    
+    # Instantiates a plain text document.
+    document = types.Document(
+        content=text,
+        type=enums.Document.Type.PLAIN_TEXT)
+
+    # Detects sentiment in the document. You can also analyze HTML
+    #  document.type == enums.Document.Type.HTML
+
+    sentiment = client.analyze_sentiment(document).document_sentiment
+
+    result = [int(sentiment.score)]
+    result.append(int(sentiment.magnitude))
+
+    return result

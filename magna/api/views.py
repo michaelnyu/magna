@@ -12,6 +12,10 @@ from .serializers import UserEntrySerializer
 from .sentiment import listEntities, showSentiment
 
 
+from .sentiment import listEntities, showSentiment
+
+
+
 @api_view(['GET', 'DELETE', 'PUT'])
 def get_delete_put_user_entry(request, pk):
 	try:
@@ -52,18 +56,10 @@ def get_post_user_entry(request):
 			'text': text,
 			'character_name': request.data.get('character').get('name'),
 			'character': request.data.get('character'),
-			'entities': listEntities(text),
+			'entities' : listEntities(text),
+			'sentiment_score' : showSentiment(text)[0],
+			'sentiment_magnitude' : showSentiment(text)[1],
 		}
-		#Sentiment Analysis on text
-		conn = httplib.HTTPSConnection('#REPLACE WITH API')
-		documents = { 'documents': [
-				{ 'id': '1', 'language': 'en', 'text': data['text'] }
-		]}
-		body = json.dumps(documents)
-		conn.request("POST", '#REPLACE WITH AZURE API', body, '#API KEY')
-		response = conn.getresponse()
-		output = str(response.read())
-		#At this point we'll have the score. Run RegEx to get the actual amount and then return in a response
 
 		serializer = UserEntrySerializer(data=data)
 		if serializer.is_valid():
