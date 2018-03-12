@@ -8,7 +8,7 @@ from django.db.models import Sum
 
 from .models import UserEntry
 from .serializers import UserEntrySerializer
-from .sentiment import listEntities, showSentiment
+from .sentiment import listEntities, showSentiment, matchEntities
 
 @api_view(['GET', 'DELETE', 'PUT'])
 def get_delete_put_user_entry(request, pk):
@@ -20,7 +20,13 @@ def get_delete_put_user_entry(request, pk):
 	# get details of specified User Entry
 	if request.method == 'GET':
 		serializer = UserEntrySerializer(user_entry)
-		return Response(serializer.data)
+		res = serializer.data
+
+		matches = {}
+		for entity in res['entities']:
+			matches[entity] = matchEntities(entity)
+		res["entity_matches"] = matches
+		return Response(res)
 	# delete specified User Entry
 	elif request.method == 'DELETE':
 		user_entry.delete()

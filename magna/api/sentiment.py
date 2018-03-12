@@ -1,6 +1,7 @@
 from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
+from .models import UserEntry
 import six
 
 def listEntities(text):
@@ -23,7 +24,7 @@ def listEntities(text):
     return result
 
 def showSentiment(text):
-    "Calculates sentiment of given text"
+    """Calculates sentiment of given text"""
     client = language.LanguageServiceClient()
 
     if isinstance(text, six.binary_type):
@@ -41,7 +42,7 @@ def showSentiment(text):
 
     return (sentiment.score, sentiment.magnitude)
 
-    # result = [sentiment.score]
-    # result.append(int(sentiment.magnitude))
+def matchEntities(entity):
+    allEntries = UserEntry.objects.all()
+    return [en.id for en in allEntries if entity in en.entities][0:3]
 
-    # return result
