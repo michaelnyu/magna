@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Sum
-
+import random
 from .models import UserEntry
 from .serializers import UserEntrySerializer
 from .sentiment import listEntities, showSentiment, getSentimentUsers, matchEntities
@@ -150,6 +150,21 @@ def get_recent_entries(request, number):
 
 	return Response(status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET']) 
+def get_random(request, number):
+
+	if request.method == 'GET':
+		allEntries = UserEntry.objects.all()
+
+		if (len(allEntries) > int(number)):
+			_random = random.sample(allEntries, int(number))
+		else:
+			_random = allEntries
+		payload = {
+			'entries': _random,
+		}
+		return Response(payload, status=status.HTTP_200_OK)
+	return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
 def put_vote(request, pk):
@@ -163,3 +178,43 @@ def put_vote(request, pk):
 		_user_entry.save()
 		_user_entry.refresh_from_db()
 		return Response(status=status.HTTP_202_ACCEPTED)
+@api_view(['GET'])
+def get_rand_users(request, count):
+
+	if request.method == 'GET':
+		entries = UserEntry.objects.all() 
+		visited = set(0)
+		users = set(entries[0])
+		visitedNames = set(entries[0].character_name)
+		for each in len(entries):
+			if len(users) == int(count):
+				payLoad = {
+					'entries': users
+					}
+				return Response(payLoad, status=status.HTTP_200_OK)
+			if visitedNames.contains(each.character_name):
+				continue
+			else:
+				visited.append(each)
+				visitedNames.append(entries[each].character_name)
+				users.append(entries[each])
+		if len(users) < int(count):
+			for each in len(entries):
+				if len(users) == int(count):
+					payLoad = {
+						'entries': users
+						}
+					return Response(payLoad, status=status.HTTP_200_OK)
+				
+				if visited.contains(each):
+					continue
+				else:
+					visited.append(each)
+					visitedNames.append(entries[each].character_name)
+					users.append(entries[each])
+		else:
+			payLoad = {
+				'entries': users
+				}
+			return Response(payLoad, status=status.HTTP_200_OK)
+	return Response(status=status.HTTP_400_BAD_REQUEST)

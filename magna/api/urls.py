@@ -42,4 +42,9 @@ urlpatterns = [
         views.put_vote,
         name='put_vote'
     ),
+    url(
+        r'^api/random/(?P<number>[0-9]+)$',
+        views.get_rand_users,
+        name='get_rand_users'
+        )
 ]
