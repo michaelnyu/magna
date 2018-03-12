@@ -3,6 +3,9 @@ from google.cloud.language import enums
 from google.cloud.language import types
 import six
 
+from .models import UserEntry
+import math
+
 def listEntities(text):
     """Detects entities in the text."""
     client = language.LanguageServiceClient()
@@ -45,3 +48,9 @@ def showSentiment(text):
     # result.append(int(sentiment.magnitude))
 
     # return result
+
+def getSentimentUsers(user):
+    """ Return an array of user ID's for users with similar sentiment scores """
+    entries = UserEntry.objects.all()
+    userIDs = [u.id for u in entries if ((math.isclose(u.sentiment_score, user.sentiment_score, rel_tol=1e-4)) and (u.id != user.id))]
+    return userIDs[:3]
