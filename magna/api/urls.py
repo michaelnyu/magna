@@ -43,8 +43,13 @@ urlpatterns = [
         name='put_vote'
     ),
     url(
-        r'^api/random/(?P<number>[0-9]+)$',
+        r'^api/random/(?P<count>[0-9]+)$',
         views.get_rand_users,
         name='get_rand_users'
-        )
+    ),
+    url(
+        r'^api/unique/(?P<count>[0-9]+)$',
+        views.get_unique,
+        name='get_unique'   
+    )
 ]

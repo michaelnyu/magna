@@ -218,3 +218,24 @@ def get_rand_users(request, count):
 				}
 			return Response(payLoad, status=status.HTTP_200_OK)
 	return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_unique(request, count):
+
+	if request.method == 'GET':
+		character_names_used = set()
+		allEntries = UserEntry.objects.all()
+		serializer = UserEntrySerializer(allEntries, many=True)
+		res_entries = []
+
+		for entry in serializer.data[::-1]:
+			if entry['character_name'] not in character_names_used:
+				res_entries.append(entry)
+				character_names_used.add(entry['character_name'])
+
+		payload = {
+			'entries': res_entries[0:int(count)]
+		}
+		return Response(payload, status=status.HTTP_200_OK)
+	return Response(status=status.HTTP_400_BAD_REQUEST)
+
