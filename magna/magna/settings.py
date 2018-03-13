@@ -40,7 +40,7 @@ SECRET_KEY = '%5h^zm^9-!ux3m4#!@ok&$%2*#j2mjzmg!0r!(u$c+yp2(0h*u'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['159.203.117.240', 'localhost']
+ALLOWED_HOSTS = ['159.203.117.240', 'localhost', 'magnacreativelabs.club']
 
 
 # Application definition

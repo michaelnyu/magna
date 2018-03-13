@@ -65,6 +65,7 @@ def get_post_user_entry(request):
 			'entities' : listEntities(text),
 			'sentiment_score' : showSentiment(text)[0],
 			'sentiment_magnitude' : showSentiment(text)[1],
+			'location': request.data.get('location')
 		}
 
 		serializer = UserEntrySerializer(data=data)

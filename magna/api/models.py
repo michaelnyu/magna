@@ -18,6 +18,7 @@ class UserEntry(models.Model):
 	entities = ArrayField(models.CharField(max_length=200), default=[])
 	sentiment_score = models.FloatField(default=-1)
 	sentiment_magnitude = models.FloatField(default=-1)
+	location = models.CharField(max_length=250, default="")
 
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
