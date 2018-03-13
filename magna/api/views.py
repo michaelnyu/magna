@@ -1,15 +1,18 @@
+import random
+import requests, base64, json
+
+from requests.auth import HTTPBasicAuth
 from django.db.models import F
 from django.shortcuts import get_object_or_404
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Sum
-import random
-from .models import UserEntry
-from .serializers import UserEntrySerializer
-from .sentiment import listEntities, showSentiment, getSentimentUsers, matchEntities
 
+from api.models import UserEntry
+from api.serializers import UserEntrySerializer
+from api.sentiment import listEntities, showSentiment, getSentimentUsers, matchEntities
+from django.conf import settings
 
 @api_view(['GET', 'DELETE', 'PUT'])
 def get_delete_put_user_entry(request, pk):
@@ -178,6 +181,7 @@ def put_vote(request, pk):
 		_user_entry.save()
 		_user_entry.refresh_from_db()
 		return Response(status=status.HTTP_202_ACCEPTED)
+
 @api_view(['GET'])
 def get_rand_users(request, count):
 
@@ -216,6 +220,7 @@ def get_rand_users(request, count):
 			payLoad = {
 				'entries': users
 				}
+
 			return Response(payLoad, status=status.HTTP_200_OK)
 	return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -236,6 +241,27 @@ def get_unique(request, count):
 		payload = {
 			'entries': res_entries[0:int(count)]
 		}
+
 		return Response(payload, status=status.HTTP_200_OK)
 	return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_donation(request):
+
+	payload = json.loads(request.body.decode("utf-8"))
+
+	if request.method == 'POST':
+		r = requests.post(
+				'https://api.pandapay.io/v1/donations',
+				data = json.dumps(payload),
+				auth = HTTPBasicAuth(settings.PANDA_KEY, ''),
+				headers = {
+						'Content-Type': 'application/json; charset=utf-8',
+				}
+		)
+
+		if r.status_code >= 200 and r.status_code < 300:
+			return Response(r.json(), status=status.HTTP_201_CREATED)
+
+	return Response(data=json.dumps(r.text), status=r.status_code)
 

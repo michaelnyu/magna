@@ -11,13 +11,26 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from django.core.exceptions import ImproperlyConfigured
+from .keys import *
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="google_token.json"
+
+def get_env_setting(setting, default=None):
+    """
+    Get the environment setting or return default value if set, otherwise return exception
+    """
+    value = os.environ.get(setting, default)
+    if default is None and value is None:
+        raise ImproperlyConfigured
+    else:
+        return value
+
+GOOGLE_KEY = get_env_setting('GOOGLE_APPLICATION_CREDENTIALS')
+PANDA_KEY = get_env_setting('PANDA_SECRET_KEY')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="google_token.json"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
