@@ -51,5 +51,10 @@ urlpatterns = [
         r'^api/unique/(?P<count>[0-9]+)$',
         views.get_unique,
         name='get_unique'   
+    ),
+    url(
+        r'^api/donation$',
+        views.create_donation,
+        name='create_donation'
     )
 ]
