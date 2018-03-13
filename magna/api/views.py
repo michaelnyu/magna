@@ -29,7 +29,7 @@ def get_delete_put_user_entry(request, pk):
 		res["sentiment_users"] = getSentimentUsers(user_entry, pk)
 		matches = {}
 		for entity in res['entities']:
-			matches[entity] = matchEntities(entity, pk)
+			matches[entity] = matchEntities(user_entry, entity, pk)
 		res["entity_matches"] = matches
     
 		return Response(res)
