@@ -26,10 +26,10 @@ def get_delete_put_user_entry(request, pk):
 		serializer = UserEntrySerializer(user_entry)
 		res = serializer.data
     
-		res["sentiment_users"] = getSentimentUsers(user_entry)
+		res["sentiment_users"] = getSentimentUsers(user_entry, pk)
 		matches = {}
 		for entity in res['entities']:
-			matches[entity] = matchEntities(entity)
+			matches[entity] = matchEntities(entity, pk)
 		res["entity_matches"] = matches
     
 		return Response(res)
