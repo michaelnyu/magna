@@ -42,14 +42,31 @@ def showSentiment(text):
 
     return (sentiment.score, sentiment.magnitude)
 
-def matchEntities(entity):
+def matchEntities(entity, pk):
     allEntries = UserEntry.objects.all()
-    return [en.id for en in allEntries if entity in en.entities][0:3]
+    selected = [en for en in allEntries if entity in en.entities]
+    used_names = set()
+    matches = []
 
+    for s in selected:
+        if s.character_name not in used_names and s.id != pk:
+            matches.append(s.id)
+            used_names.add(s.character_name)
+
+    return matches[0:4]
   
-def getSentimentUsers(user):
+def getSentimentUsers(user, pk):
     """ Return an array of user ID's for users with similar sentiment scores """
-    entries = UserEntry.objects.all()
-    userIDs = [u.id for u in entries if ((math.isclose(u.sentiment_score, user.sentiment_score, rel_tol=1e-4)) and (u.id != user.id))]
-    return userIDs[:3]
+    allEntries = UserEntry.objects.all()
+    entries = [u for u in allEntries if ((math.isclose(u.sentiment_score, user.sentiment_score, rel_tol=1e-4)) and (u.id != user.id))]
+    
+    used_names = set()
+    matches = []
+
+    for s in entries:
+        if s.character_name not in used_names and s.id != pk:
+            matches.append(s.id)
+            used_names.add(s.character_name) 
+
+    return matches[0:4]
 
